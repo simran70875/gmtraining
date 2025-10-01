@@ -77,19 +77,11 @@ try {
   console.error('❌ Failed to load authRoutes:', err.message);
 }
 
-// Serve frontend and admin (Vite build)
+// Serve frontend (React/Vite build)
 const adminPath = path.join(__dirname, '../admin/dist');
+app.use(express.static(adminPath));
 
-// Serve static files
-app.use('/', express.static(adminPath));
-
-
-// Fallback for admin SPA
-app.get("/", (req, res) => {
+// Catch-all route to serve index.html for client-side routing
+app.get('*', (req, res) => {
   res.sendFile(path.join(adminPath, 'index.html'));
 });
-
-app.get("/", (req, res) => {
-  res.send("Welcome to gmtraining backend");
-});
-
